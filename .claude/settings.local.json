@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__08a834dd-34e9-430c-bf2d-4dbaa7af8bfb__get_design_context",
+      "mcp__08a834dd-34e9-430c-bf2d-4dbaa7af8bfb__get_variable_defs",
+      "mcp__08a834dd-34e9-430c-bf2d-4dbaa7af8bfb__get_screenshot",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -sI http://localhost:4173/)",
+      "Bash(python3 -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
+      "Bash(sips --help)",
+      "Bash(pip3 install *)",
+      "Bash(python3 -c \"import PIL; print\\('PIL OK', PIL.__version__\\)\")",
+      "Bash(file *.png)",
+      "Bash(curl -s -o hand.png \"https://www.figma.com/api/mcp/asset/564a5781-f824-4f59-ae1d-f4cce615bb7f\")",
+      "Bash(curl -s -o note-photo.png \"https://www.figma.com/api/mcp/asset/bff561d3-a52c-4e29-9852-7b0b990afeec\")",
+      "Bash(curl -s -o pen.png \"https://www.figma.com/api/mcp/asset/c7d85895-6d4f-4aab-9fa2-d7977307cf17\")",
+      "Bash(curl -s -o avatar.png \"https://www.figma.com/api/mcp/asset/d315aa74-ae4b-4392-97e0-269a837ad436\")",
+      "Bash(curl -s -o collage-511.png \"https://www.figma.com/api/mcp/asset/db676777-874e-4fbe-8b1d-469eda7d540a\")",
+      "Bash(cp logo-icon-hero-candy.svg logo-icon.svg)",
+      "Bash(rm logo-icon-hero-candy.svg logo-icon-closing-candy.svg logo-icon-footer.svg logo-icon-header.svg)",
+      "Bash(rm -f /tmp/index.html.bak /tmp/download_map.txt /tmp/referenced.txt /tmp/crop_assets.py *)",
+      "Bash(curl -s -o /tmp/headline_figma.png \"https://www.figma.com/api/mcp/asset/c81082f4-1d2f-42cf-8dbb-81f1b8ed7d8e\")",
+      "Bash(curl -s -o /tmp/header_buttons_figma.png \"https://www.figma.com/api/mcp/asset/68bd4b32-ba8d-4a50-a179-e6b91fc085ef\")",
+      "mcp__08a834dd-34e9-430c-bf2d-4dbaa7af8bfb__get_metadata",
+      "Bash(python3)"
+    ]
+  }
+}
