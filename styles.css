@@ -452,19 +452,22 @@ button {
     linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
 }
 
-/* Duotone grain noise, scoped to just the gradient backgrounds via ::before/::after so it
-   never paints over cards, text, or buttons — those are later DOM siblings with their own
-   stacking context and sit above these background layers. */
+/* Craft-paper particle noise, scoped to just the gradient backgrounds via ::before/::after
+   so it never paints over cards, text, or buttons — those are later DOM siblings with
+   their own stacking context and sit above these background layers. A discrete alpha
+   transfer turns the turbulence into sparse specks (like paper pulp flecks or dust)
+   rather than continuous fiber streaks; mix-blend-mode: multiply lets it shade into the
+   gradient like flecks embedded in the paper instead of sitting on top as a tint. */
 .hero-bg::after,
 .block-bg-1::after,
-.block-bg-2::after,
-.numbers::before {
+.block-bg-2::after {
   content: "";
   position: absolute;
   inset: 0;
   background-repeat: repeat;
-  background-size: 200px 200px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch' result='noise'/><feColorMatrix in='noise' type='matrix' values='0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0 0 0 1 0' result='gray'/><feComponentTransfer in='gray'><feFuncR type='table' tableValues='0.8588 1'/><feFuncG type='table' tableValues='0.6157 1'/><feFuncB type='table' tableValues='0.6157 1'/><feFuncA type='table' tableValues='0.25 0.30'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='turbulence' baseFrequency='0.55' numOctaves='3' seed='7' stitchTiles='stitch' result='noise'/><feColorMatrix in='noise' type='matrix' values='0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0 0 0 1 0' result='gray'/><feComponentTransfer in='gray'><feFuncR type='table' tableValues='0.4 0.85'/><feFuncG type='table' tableValues='0.28 0.6'/><feFuncB type='table' tableValues='0.16 0.36'/><feFuncA type='discrete' tableValues='0 0 0 0 0.45 0 0.05 0.5 0 0'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: multiply;
   pointer-events: none;
 }
 
