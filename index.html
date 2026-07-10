@@ -10,6 +10,20 @@
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="header-container">
+      <div class="logo-name">
+        <img src="assets/icon-logo.svg" alt="candytrail" />
+        <span>candytrail</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline btn-sm">Login</button>
+        <button class="btn btn-solid btn-sm">Book Demo</button>
+      </div>
+    </div>
+  </div>
+</header>
 <div class="viewport">
 <div class="page">
 
@@ -62,19 +76,6 @@
     <div class="hero-candy">
       <img src="assets/icon-logo.svg" alt="" />
     </div>
-
-    <header class="site-header">
-      <div class="header-container">
-        <div class="logo-name">
-          <img src="assets/icon-logo.svg" alt="candytrail" />
-          <span>candytrail</span>
-        </div>
-        <div class="header-actions">
-          <button class="btn btn-outline btn-sm">Login</button>
-          <button class="btn btn-solid btn-sm">Book Demo</button>
-        </div>
-      </div>
-    </header>
   </section>
 
   <!-- ============ NUMBERS ============ -->
@@ -84,15 +85,15 @@
     </div>
     <div class="numbers-cards">
       <div class="numbers-card">
-        <p class="stat"><span class="stat-num">32</span><span class="stat-unit">hours</span></p>
+        <p class="stat"><span class="stat-num" data-count-to="32">32</span><span class="stat-unit">hours</span></p>
         <p class="stat-label">Average manager time saved weekly.</p>
       </div>
       <div class="numbers-card">
-        <p class="stat"><span class="stat-num stat-num-2">35</span><span class="stat-pct">%</span></p>
+        <p class="stat"><span class="stat-num stat-num-2" data-count-to="35">35</span><span class="stat-pct">%</span></p>
         <p class="stat-label">Average lift in close rate.</p>
       </div>
       <div class="numbers-card">
-        <p class="stat stat-single">12%</p>
+        <p class="stat stat-single"><span data-count-to="12">12</span>%</p>
         <p class="stat-label">Average increase in ticket size.</p>
       </div>
     </div>

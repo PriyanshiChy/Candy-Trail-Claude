@@ -38,19 +38,6 @@ button {
   background: none;
 }
 
-/* Fixed to the viewport (not .page) so grain size stays constant regardless of the
-   proportional scale factor applied to the canvas. */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 1;
-  mix-blend-mode: normal;
-  background-repeat: repeat;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.6 0.6' numOctaves='3' stitchTiles='stitch' result='noise'/><feColorMatrix in='noise' type='matrix' values='0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0 0 0 1 0' result='gray'/><feComponentTransfer in='gray'><feFuncR type='table' tableValues='0.8588 1'/><feFuncG type='table' tableValues='0.6157 1'/><feFuncB type='table' tableValues='0.6157 1'/><feFuncA type='table' tableValues='0.25 0.30'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-}
-
 /* Scales the fixed 1280px canvas down as one unit to fit narrower viewports,
    so every absolutely-positioned doodle/card keeps its exact relative position. */
 .viewport {
@@ -285,7 +272,18 @@ button {
   align-items: center;
   justify-content: center;
 }
-.hero-pen img { width: 67.813px; height: 448.924px; transform: rotate(27.42deg); }
+.hero-pen img {
+  width: 67.813px;
+  height: 448.924px;
+  transform-origin: 54.38% 97.66%;
+  /* Resting pose, pivoted from the tip so it swings in just outside the left edge */
+  transform: translate(-98.86px, -22.67px) rotate(-2.58deg);
+  animation: pen-rotate-in 0.75s ease-out 0.3s both;
+}
+@keyframes pen-rotate-in {
+  0%   { transform: translate(-98.86px, -22.67px) rotate(-2.58deg); }
+  100% { transform: translate(-98.86px, -22.67px) rotate(27.42deg); }
+}
 
 .hero-candy {
   position: absolute;
@@ -297,15 +295,55 @@ button {
   align-items: center;
   justify-content: center;
 }
-.hero-candy img { width: 275.304px; height: 217.5px; transform: rotate(42.62deg); }
+.hero-candy img {
+  width: 275.304px;
+  height: 217.5px;
+  /* Resting pose, off outside the viewport, until it slides straight in from the right
+     and gets "pressed" onto the page like a real sticker — arrive and stick */
+  transform: translateX(700px) rotate(42.62deg) scale(0.5, 0.5);
+  filter: drop-shadow(6px 20px 14px rgba(0, 0, 0, 0.35));
+  animation:
+    candy-sticker-in 0.85s cubic-bezier(0.2, 0.6, 0.3, 1) 0.3s both,
+    candy-sticker-shadow 0.85s ease-out 0.3s both;
+}
+@keyframes candy-sticker-in {
+  0%   { transform: translateX(700px) rotate(42.62deg) scale(0.5, 0.5); }
+  65%  { transform: translateX(0) rotate(42.62deg) scale(1.16, 0.86); }
+  80%  { transform: translateX(0) rotate(42.9deg) scale(0.95, 1.05); }
+  92%  { transform: translateX(0) rotate(42.5deg) scale(1.02, 0.99); }
+  100% { transform: translateX(0) rotate(42.62deg) scale(1, 1); }
+}
+@keyframes candy-sticker-shadow {
+  0%   { filter: drop-shadow(6px 20px 14px rgba(0, 0, 0, 0.35)); }
+  65%  { filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.3)); }
+  100% { filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)); }
+}
 
+/* Sits outside the scaled .page wrapper so `position: fixed` stays pinned to the
+   real viewport (a transformed ancestor would otherwise become its containing block). */
 .site-header {
-  position: absolute;
-  left: 0; top: 0;
-  width: 1280px;
-  padding: 8px 32px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
   display: flex;
   justify-content: center;
+  background: transparent;
+  pointer-events: none;
+}
+.site-header-inner {
+  width: 1280px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 8px 32px;
+  transform-origin: top center;
+  pointer-events: auto;
+  background: #ffffff;
+  transition: background-color 0.25s ease;
+}
+.site-header-inner.is-scrolled {
+  background: transparent;
 }
 .header-container {
   display: flex;
@@ -326,6 +364,7 @@ button {
 
 /* ============ NUMBERS ============ */
 .numbers {
+  position: relative;
   width: 1280px;
   padding: 32px 8px;
   display: flex;
@@ -333,9 +372,9 @@ button {
   align-items: center;
   background-image: linear-gradient(106.01568470940114deg, rgb(242, 221, 198) 20.69%, rgb(255, 251, 247) 37.467%, rgb(242, 221, 198) 51.077%, rgb(255, 189, 117) 100%);
 }
-.numbers-top { max-width: 1152px; width: 100%; display: flex; justify-content: center; padding: 0 16px; }
+.numbers-top { position: relative; z-index: 1; max-width: 1152px; width: 100%; display: flex; justify-content: center; padding: 0 16px; }
 .numbers-top h2 { margin: 0; font-weight: 700; font-size: 24px; line-height: 32px; color: var(--brown-dark); text-align: center; }
-.numbers-cards { max-width: 1152px; width: 100%; display: flex; justify-content: space-between; align-items: flex-start; }
+.numbers-cards { position: relative; z-index: 1; max-width: 1152px; width: 100%; display: flex; justify-content: space-between; align-items: flex-start; }
 .numbers-card {
   flex: 1 0 0;
   display: flex;
@@ -411,6 +450,22 @@ button {
   background-image:
     url("data:image/svg+xml;utf8,<svg viewBox='0 0 1280 1664' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%25' width='100%25' fill='url(%23grad)' opacity='1'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(-68.4 29.318 -25.32 -59.144 1280 805.98)'><stop stop-color='rgba(243,107,110,1)' offset='0'/><stop stop-color='rgba(243,107,110,0.5)' offset='0.31474'/><stop stop-color='rgba(243,107,110,0)' offset='1'/></radialGradient></defs></svg>"),
     linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%);
+}
+
+/* Duotone grain noise, scoped to just the gradient backgrounds via ::before/::after so it
+   never paints over cards, text, or buttons — those are later DOM siblings with their own
+   stacking context and sit above these background layers. */
+.hero-bg::after,
+.block-bg-1::after,
+.block-bg-2::after,
+.numbers::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch' result='noise'/><feColorMatrix in='noise' type='matrix' values='0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0.33 0.33 0.33 0 0 0 0 0 1 0' result='gray'/><feComponentTransfer in='gray'><feFuncR type='table' tableValues='0.8588 1'/><feFuncG type='table' tableValues='0.6157 1'/><feFuncB type='table' tableValues='0.6157 1'/><feFuncA type='table' tableValues='0.25 0.30'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  pointer-events: none;
 }
 
 .insight { position: relative; width: 100%; height: 832px; display: flex; align-items: center; }
@@ -641,7 +696,7 @@ button {
   justify-content: center;
   gap: 10px;
 }
-.closing-container { max-width: 1152px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.closing-container { position: relative; z-index: 1; max-width: 1152px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .closing-text { position: relative; width: 871px; height: 256px; }
 .closing-title {
   position: absolute;
@@ -654,7 +709,9 @@ button {
   line-height: 80px;
   text-align: center;
   white-space: nowrap;
-  background-image: linear-gradient(110.11426685306115deg, rgb(242, 221, 198) 20.69%, rgb(255, 251, 247) 37.467%, rgb(242, 221, 198) 51.077%, rgb(255, 189, 117) 100%);
+  background-image: linear-gradient(100deg, rgb(204, 145, 60) 0%, rgb(255, 189, 117) 12%, rgb(204, 145, 60) 24%, rgb(255, 189, 117) 36%, rgb(255, 236, 200) 46%, rgb(255, 251, 247) 50%, rgb(255, 236, 200) 54%, rgb(255, 189, 117) 64%, rgb(204, 145, 60) 76%, rgb(255, 189, 117) 88%, rgb(204, 145, 60) 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -670,10 +727,20 @@ button {
   font-size: 24px;
   line-height: normal;
   text-align: center;
-  background-image: linear-gradient(129.14025950576794deg, rgb(242, 221, 198) 20.69%, rgb(255, 251, 247) 37.467%, rgb(242, 221, 198) 51.077%, rgb(255, 189, 117) 100%);
+  background-image: linear-gradient(100deg, rgb(204, 145, 60) 0%, rgb(255, 189, 117) 12%, rgb(204, 145, 60) 24%, rgb(255, 189, 117) 36%, rgb(255, 236, 200) 46%, rgb(255, 251, 247) 50%, rgb(255, 236, 200) 54%, rgb(255, 189, 117) 64%, rgb(204, 145, 60) 76%, rgb(255, 189, 117) 88%, rgb(204, 145, 60) 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+.closing.in-view .closing-title,
+.closing.in-view .closing-subtitle {
+  animation: closing-text-shine 1.8s ease-in-out 0.6s 1 both;
+}
+@keyframes closing-text-shine {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 .closing-photo {
   position: absolute;
@@ -689,7 +756,9 @@ button {
   width: 372.877px;
   height: 398.136px;
   object-fit: cover;
-  transform: rotate(-73.31deg);
+  transform-origin: 10.4% 81.5%;
+  /* Resting pose, off past the right edge of the viewport, until .in-view animates it in */
+  transform: translate(225.38px, 52.03px) rotate(41deg);
   filter: drop-shadow(0px 12px 8.1px rgba(0, 0, 0, 0.25));
 }
 .closing-candy {
@@ -702,7 +771,31 @@ button {
   align-items: center;
   justify-content: center;
 }
-.closing-candy img { width: 206.478px; height: 163.125px; transform: rotate(-46.44deg); }
+.closing-candy img {
+  width: 206.478px;
+  height: 163.125px;
+  /* Resting pose, off outside the viewport on the left, until it flies in and
+     gets "pressed" onto the page like a real sticker, on scroll into view */
+  transform: translate(-750px, -60px) rotate(-25deg) scale(0.5, 0.5);
+  filter: drop-shadow(6px 20px 14px rgba(0, 0, 0, 0.35));
+}
+.closing.in-view .closing-candy img {
+  animation:
+    closing-candy-sticker-in 0.85s cubic-bezier(0.2, 0.6, 0.3, 1) 0.3s both,
+    closing-candy-sticker-shadow 0.85s ease-out 0.3s both;
+}
+@keyframes closing-candy-sticker-in {
+  0%   { transform: translate(-750px, -60px) rotate(-25deg) scale(0.5, 0.5); }
+  65%  { transform: translate(0, 0) rotate(-46.44deg) scale(1.16, 0.86); }
+  80%  { transform: translate(0, 0) rotate(-46.8deg) scale(0.95, 1.05); }
+  92%  { transform: translate(0, 0) rotate(-46.2deg) scale(1.02, 0.99); }
+  100% { transform: translate(0, 0) rotate(-46.44deg) scale(1, 1); }
+}
+@keyframes closing-candy-sticker-shadow {
+  0%   { filter: drop-shadow(6px 20px 14px rgba(0, 0, 0, 0.35)); }
+  65%  { filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.3)); }
+  100% { filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0)); }
+}
 
 /* ============ FOOTER ============ */
 .site-footer {
@@ -720,3 +813,108 @@ button {
 .footer-copy { margin: 0; font-weight: 400; font-size: 16px; line-height: 20px; letter-spacing: 0.24px; color: #fff; white-space: nowrap; }
 .footer-links { display: flex; gap: 12px; align-items: flex-start; }
 .footer-links img { width: 20px; height: 20px; }
+
+/* ============ Interactions & animations ============ */
+
+/* Sticky note: letters appear one at a time, like the note is being written live */
+.hero-note-text .letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(4px);
+}
+.hero-note-text .letter-space {
+  width: 0.3em;
+}
+.hero-note-text.scribble-run .letter {
+  animation: letter-write 0.16s ease-out forwards;
+  animation-delay: calc(var(--i) * 55ms + 300ms);
+}
+@keyframes letter-write {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Y Combinator hanging sign: the string + badge swing together from the nail —
+   a damped sine wave (constant period, decaying amplitude) for a natural pendulum feel */
+.hero-mark-stick, .yc-badge {
+  transform-origin: top center;
+  animation: hero-mark-swing 1.8s linear 0.4s both;
+}
+@keyframes hero-mark-swing {
+  0%   { transform: rotate(4.53deg); }
+  5%   { transform: rotate(15.01deg); }
+  10%  { transform: rotate(19.64deg); }
+  15%  { transform: rotate(18deg); }
+  20%  { transform: rotate(11.95deg); }
+  25%  { transform: rotate(4.53deg); }
+  30%  { transform: rotate(-1.37deg); }
+  35%  { transform: rotate(-3.97deg); }
+  40%  { transform: rotate(-3.05deg); }
+  45%  { transform: rotate(0.35deg); }
+  50%  { transform: rotate(4.53deg); }
+  55%  { transform: rotate(7.85deg); }
+  60%  { transform: rotate(9.32deg); }
+  65%  { transform: rotate(8.8deg); }
+  70%  { transform: rotate(6.88deg); }
+  75%  { transform: rotate(4.53deg); }
+  80%  { transform: rotate(2.66deg); }
+  85%  { transform: rotate(1.84deg); }
+  90%  { transform: rotate(2.13deg); }
+  95%  { transform: rotate(3.21deg); }
+  100% { transform: rotate(4.53deg); }
+}
+
+/* Closing section highlighter: pivots from its bottom (barrel) end, rotating in from
+   outside the viewport on the right, straight to its resting position — no wobble */
+.closing.in-view .closing-photo img {
+  animation: highlighter-rotate-in 0.75s ease-out 0.2s both;
+}
+@keyframes highlighter-rotate-in {
+  0%   { transform: translate(225.38px, 52.03px) rotate(41deg); }
+  100% { transform: translate(225.38px, 52.03px) rotate(-73.31deg); }
+}
+
+/* Doodles ("Guess Work", "Shadowing", "Micro management"): text scribbles in,
+   then the strikethrough draws across it, when scrolled into view. */
+.doodle-text, .doodle-arrow {
+  clip-path: inset(0 100% 0 0);
+}
+.doodle.in-view .doodle-text {
+  animation: doodle-text-reveal 0.6s steps(18, end) forwards;
+}
+.doodle.in-view .doodle-arrow {
+  animation: doodle-arrow-reveal 0.45s steps(12, end) 0.6s forwards;
+}
+@keyframes doodle-text-reveal {
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes doodle-arrow-reveal {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* Recorder waveform: bars pulse to mimic live speech */
+.bar { animation: waveform-live 1s ease-in-out infinite; transform-origin: center; }
+.bar-1 { animation-delay: 0s; }
+.bar-2 { animation-delay: 0.15s; }
+.bar-3 { animation-delay: 0.3s; }
+@keyframes waveform-live {
+  0%, 100% { transform: scaleY(0.55); }
+  25%      { transform: scaleY(1); }
+  50%      { transform: scaleY(0.65); }
+  75%      { transform: scaleY(0.85); }
+}
+
+/* "How candytrail works" cards, and the Clarity / Freedom / Intelligence / Coaching
+   sections: fade + rise into place, staggered, when scrolled into view. */
+.how-card,
+.insight-container > * {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.how-it-works.in-view .how-card,
+.insight.in-view .insight-container > * {
+  animation: fade-in-up 0.7s ease-out forwards;
+  animation-delay: calc(var(--i, 0) * 120ms);
+}
+@keyframes fade-in-up {
+  to { opacity: 1; transform: translateY(0); }
+}

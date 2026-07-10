@@ -24,7 +24,20 @@
       "Bash(curl -s -o /tmp/headline_figma.png \"https://www.figma.com/api/mcp/asset/c81082f4-1d2f-42cf-8dbb-81f1b8ed7d8e\")",
       "Bash(curl -s -o /tmp/header_buttons_figma.png \"https://www.figma.com/api/mcp/asset/68bd4b32-ba8d-4a50-a179-e6b91fc085ef\")",
       "mcp__08a834dd-34e9-430c-bf2d-4dbaa7af8bfb__get_metadata",
-      "Bash(python3)"
+      "Bash(python3)",
+      "mcp__figma-mcp-go__get_selection",
+      "mcp__figma-mcp-go__get_design_context",
+      "mcp__figma-mcp-go__get_screenshot",
+      "Bash(python3 -c \"import numpy; print\\('ok', numpy.__version__\\)\")",
+      "mcp__figma-mcp-go__search_nodes",
+      "mcp__figma-mcp-go__get_node",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -sL -o /tmp/closing_real.png \"https://www.figma.com/api/mcp/asset/c96eb90d-1baa-4c75-b725-2f18116d2244\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4173/)",
+      "Bash(python3 -c \"import sys; print\\(repr\\(sys.stdin.read\\(\\)\\)\\)\")",
+      "Bash(find /Users/pakhi/.claude -iname \"*.png\" -newer /tmp/note_check -mmin -10 2>/dev/null | head -20)",
+      "Bash(python3 -c \"import cairosvg\")",
+      "Bash(curl -s -m 5 -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4173/)"
     ]
   }
 }
